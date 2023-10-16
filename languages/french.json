@@ -1,0 +1,43 @@
+{
+  "title": "French",
+  "names": [
+    {"value": 0, "name": "zéro"},
+    {"value": 1, "name": "un"},
+    {"value": 2, "name": "deux"},
+    {"value": 3, "name": "trois"},
+    {"value": 4, "name": "quatre"},
+    {"value": 5, "name": "cinq"},
+    {"value": 6, "name": "six"},
+    {"value": 7, "name": "sept"},
+    {"value": 8, "name": "huit"},
+    {"value": 9, "name": "neuf"},
+    {"value": 10, "name": "dix"},
+    {"value": 11, "name": "onze"},
+    {"value": 12, "name": "douze"},
+    {"value": 13, "name": "treize"},
+    {"value": 14, "name": "quatorze"},
+    {"value": 15, "name": "quinze"},
+    {"value": 16, "name": "seize"},
+    {"value": 17, "name": "dixsept"},
+    {"value": 18, "name": "dixhuit"},
+    {"value": 19, "name": "dixneuf"},
+    {"value": 20, "name": "vingt"},
+    {"value": 30, "name": "trente"},
+    {"value": 40, "name": "quarante"},
+    {"value": 50, "name": "cinqante"},
+    {"value": 60, "name": "soixante"},
+    {"value": 70, "name": "soixante-dix"},
+    {"value": 80, "name": "quatre-vingts"},
+    {"value": 90, "name": "quatre-vingts-dix"}
+  ],
+  "labels": [
+    {"value": 100, "label": "hundred"},
+    {"value": 1000, "label": "thousand"},
+    {"value": 1000000, "label": "million"},
+    {"value": 1000000000, "label": "billion"},
+    {"value": 1000000000000, "label": "trillion"},
+    {"value": 1000000000000000, "label": "quadrillion"},
+    {"value": 1000000000000000000, "label": "quintillion"}
+  ],
+  "separator": "et"
+}
