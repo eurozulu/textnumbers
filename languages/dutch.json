@@ -1,0 +1,45 @@
+{
+  "title": "Dutch",
+  "separator": "en",
+  "invert-name": true,
+
+  "names": [
+    {"value": 0, "name": "nul"},
+    {"value": 1, "name": "een"},
+    {"value": 2, "name": "twee"},
+    {"value": 3, "name": "drie"},
+    {"value": 4, "name": "vier"},
+    {"value": 5, "name": "vief"},
+    {"value": 6, "name": "zes"},
+    {"value": 7, "name": "zeven"},
+    {"value": 8, "name": "acht"},
+    {"value": 9, "name": "negen"},
+    {"value": 10, "name": "tien"},
+    {"value": 11, "name": "elf"},
+    {"value": 12, "name": "twaalf"},
+    {"value": 13, "name": "dertien"},
+    {"value": 14, "name": "veertien"},
+    {"value": 15, "name": "vijftien"},
+    {"value": 16, "name": "zestien"},
+    {"value": 17, "name": "zeventien"},
+    {"value": 18, "name": "achttien"},
+    {"value": 19, "name": "negentien"},
+    {"value": 20, "name": "twintig"},
+    {"value": 30, "name": "dertig"},
+    {"value": 40, "name": "veertig"},
+    {"value": 50, "name": "vijftig"},
+    {"value": 60, "name": "zestig"},
+    {"value": 70, "name": "zeventig"},
+    {"value": 80, "name": "tachtig"},
+    {"value": 90, "name": "negentig"}
+  ],
+  "labels": [
+    {"value": 100, "label": "honderd"},
+    {"value": 1000, "label": "duizend"},
+    {"value": 1000000, "label": "miljoen"},
+    {"value": 1000000000, "label": "miljard"},
+    {"value": 1000000000000, "label": "biljoen"},
+    {"value": 1000000000000000, "label": "quadriljoen"},
+    {"value": 1000000000000000000, "label": "quintiljoen"}
+  ]
+}

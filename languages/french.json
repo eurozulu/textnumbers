@@ -31,11 +31,11 @@
     {"value": 90, "name": "quatre-vingts-dix"}
   ],
   "labels": [
-    {"value": 100, "label": "hundred"},
-    {"value": 1000, "label": "thousand"},
+    {"value": 100, "label": "cent"},
+    {"value": 1000, "label": "mille"},
     {"value": 1000000, "label": "million"},
-    {"value": 1000000000, "label": "billion"},
-    {"value": 1000000000000, "label": "trillion"},
+    {"value": 1000000000, "label": "milliard"},
+    {"value": 1000000000000, "label": "mille milliards"},
     {"value": 1000000000000000, "label": "quadrillion"},
     {"value": 1000000000000000000, "label": "quintillion"}
   ],

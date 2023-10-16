@@ -18,10 +18,11 @@ type Language interface {
 }
 
 type language struct {
-	title     string
-	names     []*numberName
-	labels    []*numberLabel
-	separator string
+	title      string
+	names      []*numberName
+	labels     []*numberLabel
+	separator  string
+	invertName bool
 }
 
 func (l language) Title() string {
@@ -48,16 +49,26 @@ func (l language) Format(i int64) string {
 }
 
 func (l language) writeName(i int64) string {
-	sb := NewStringBuffer()
+	var names []string
 	for {
 		nm := l.nameFor(i)
-		sb.Append(nm.Name)
+		names = append(names, nm.Name)
 		i = i - nm.Value
 		if i == 0 {
 			break
 		}
 	}
-	return sb.String()
+	if l.invertName && len(names) > 1 {
+		return l.invertedName(names)
+	}
+	return strings.Join(names, " ")
+}
+
+func (l language) invertedName(s []string) string {
+	last := len(s) - 1
+	ss := []string{s[last], l.separator}
+	ss = append(ss, s[:last]...)
+	return strings.Join(ss, " ")
 }
 
 func (l language) writeLabels(i int64) (string, int64) {
@@ -98,10 +109,11 @@ func (l language) labelFor(i int64) *numberLabel {
 func (l *language) UnmarshalJSON(bytes []byte) error {
 	// using standard json decoding, into a psudo instance, then sorts bases before assigning to this.
 	var lp struct {
-		Title     string         `json:"title"`
-		Names     []*numberName  `json:"names"`
-		Labels    []*numberLabel `json:"labels,omitempty"`
-		Separator string         `json:"separator,omitempty"`
+		Title      string         `json:"title"`
+		Names      []*numberName  `json:"names"`
+		Labels     []*numberLabel `json:"labels,omitempty"`
+		Separator  string         `json:"separator,omitempty"`
+		InvertName bool           `json:"invert-name,omitempty"`
 	}
 	if err := json.Unmarshal(bytes, &lp); err != nil {
 		return err
@@ -120,6 +132,7 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 	l.names = lp.Names
 	l.labels = lp.Labels
 	l.separator = lp.Separator
+	l.invertName = lp.InvertName
 	return l.validate()
 }
 
