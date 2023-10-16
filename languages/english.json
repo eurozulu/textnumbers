@@ -1,0 +1,43 @@
+{
+  "title": "English",
+  "names": [
+    {"value": 0, "name": "zero"},
+    {"value": 1, "name": "one"},
+    {"value": 2, "name": "two"},
+    {"value": 3, "name": "three"},
+    {"value": 4, "name": "four"},
+    {"value": 5, "name": "five"},
+    {"value": 6, "name": "six"},
+    {"value": 7, "name": "seven"},
+    {"value": 8, "name": "eight"},
+    {"value": 9, "name": "nine"},
+    {"value": 10, "name": "ten"},
+    {"value": 11, "name": "eleven"},
+    {"value": 12, "name": "twelve"},
+    {"value": 13, "name": "thirteen"},
+    {"value": 14, "name": "fourteen"},
+    {"value": 15, "name": "fifteen"},
+    {"value": 16, "name": "sixteen"},
+    {"value": 17, "name": "seventeen"},
+    {"value": 18, "name": "eighteen"},
+    {"value": 19, "name": "nineteen"},
+    {"value": 20, "name": "twenty"},
+    {"value": 30, "name": "thirty"},
+    {"value": 40, "name": "fourty"},
+    {"value": 50, "name": "fifty"},
+    {"value": 60, "name": "sixty"},
+    {"value": 70, "name": "seventy"},
+    {"value": 80, "name": "eighty"},
+    {"value": 90, "name": "ninety"}
+  ],
+  "labels": [
+    {"value": 100, "label": "hundred"},
+    {"value": 1000, "label": "thousand"},
+    {"value": 1000000, "label": "million"},
+    {"value": 1000000000, "label": "billion"},
+    {"value": 1000000000000, "label": "trillion"},
+    {"value": 1000000000000000, "label": "quadrillion"},
+    {"value": 1000000000000000000, "label": "quintillion"}
+  ],
+  "separator": "and"
+}
