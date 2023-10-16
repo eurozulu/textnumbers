@@ -1,5 +1,6 @@
 {
   "title": "French",
+  "minus": "moins",
   "names": [
     {"value": 0, "name": "zéro"},
     {"value": 1, "name": "un"},

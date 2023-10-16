@@ -1,5 +1,7 @@
 {
   "title": "English",
+  "separator": "and",
+  "minus": "minus",
   "names": [
     {"value": 0, "name": "zero"},
     {"value": 1, "name": "one"},
@@ -38,6 +40,5 @@
     {"value": 1000000000000, "label": "trillion"},
     {"value": 1000000000000000, "label": "quadrillion"},
     {"value": 1000000000000000000, "label": "quintillion"}
-  ],
-  "separator": "and"
+  ]
 }

@@ -23,6 +23,7 @@ type language struct {
 	labels     []*numberLabel
 	separator  string
 	invertName bool
+	minusLabel string
 }
 
 func (l language) Title() string {
@@ -30,9 +31,11 @@ func (l language) Title() string {
 }
 
 func (l language) Format(i int64) string {
+	var minus string
 	isMinus := i < 0
 	if isMinus {
 		i = -i
+		minus = l.minusLabel
 	}
 	// trim off the higher digits which have labels
 	lb, r := l.writeLabels(i)
@@ -45,7 +48,7 @@ func (l language) Format(i int64) string {
 		sp = l.separator
 	}
 
-	return NewStringBuffer().Append(lb).Append(sp).Append(n).String()
+	return NewStringBuffer().Append(minus).Append(lb).Append(sp).Append(n).String()
 }
 
 func (l language) writeName(i int64) string {
@@ -114,6 +117,7 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 		Labels     []*numberLabel `json:"labels,omitempty"`
 		Separator  string         `json:"separator,omitempty"`
 		InvertName bool           `json:"invert-name,omitempty"`
+		MinusLabel string         `json:"minus"`
 	}
 	if err := json.Unmarshal(bytes, &lp); err != nil {
 		return err
@@ -133,6 +137,7 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 	l.labels = lp.Labels
 	l.separator = lp.Separator
 	l.invertName = lp.InvertName
+	l.minusLabel = lp.MinusLabel
 	return l.validate()
 }
 

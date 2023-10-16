@@ -30,6 +30,9 @@ func readArgs(args []string) (int64, string, error) {
 	if len(args) < 1 {
 		return 0, "", fmt.Errorf("provide a number to convert")
 	}
+	if len(args[0]) >= 20 {
+		return 0, "", fmt.Errorf("provided a number is too long")
+	}
 	i, err := strconv.ParseInt(args[0], 10, 64)
 	if err != nil {
 		return 0, "", err
