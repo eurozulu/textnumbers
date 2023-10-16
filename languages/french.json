@@ -40,5 +40,5 @@
     {"value": 1000000000000, "label": "mille milliards"},
     {"value": 1000000000000000, "label": "quadrillion"},
     {"value": 1000000000000000000, "label": "quintillion"}
-  ],
+  ]
 }
