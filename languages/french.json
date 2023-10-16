@@ -1,5 +1,6 @@
 {
   "title": "French",
+  "separator": "et",
   "minus": "moins",
   "names": [
     {"value": 0, "name": "zéro"},
@@ -40,5 +41,4 @@
     {"value": 1000000000000000, "label": "quadrillion"},
     {"value": 1000000000000000000, "label": "quintillion"}
   ],
-  "separator": "et"
 }
