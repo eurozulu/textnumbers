@@ -34,12 +34,12 @@
     {"value": 90, "name": "negentig"}
   ],
   "labels": [
-    {"value": 100, "label": "honderd"},
-    {"value": 1000, "label": "duizend"},
-    {"value": 1000000, "label": "miljoen"},
-    {"value": 1000000000, "label": "miljard"},
-    {"value": 1000000000000, "label": "biljoen"},
-    {"value": 1000000000000000, "label": "quadriljoen"},
-    {"value": 1000000000000000000, "label": "quintiljoen"}
+    {"value": 100, "name": "honderd"},
+    {"value": 1000, "name": "duizend"},
+    {"value": 1000000, "name": "miljoen"},
+    {"value": 1000000000, "name": "miljard"},
+    {"value": 1000000000000, "name": "biljoen"},
+    {"value": 1000000000000000, "name": "quadriljoen"},
+    {"value": 1000000000000000000, "name": "quintiljoen"}
   ]
 }

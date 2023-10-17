@@ -36,6 +36,10 @@ func (sb stringBuffer) Append(s string) StringBuffer {
 	return sb
 }
 
-func NewStringBuffer() StringBuffer {
-	return &stringBuffer{buf: bytes.NewBuffer(nil)}
+func NewStringBuffer(s ...string) StringBuffer {
+	sb := &stringBuffer{buf: bytes.NewBuffer(nil)}
+	for _, ss := range s {
+		sb.Append(ss)
+	}
+	return sb
 }

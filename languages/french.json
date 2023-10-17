@@ -33,12 +33,12 @@
     {"value": 90, "name": "quatre-vingts-dix"}
   ],
   "labels": [
-    {"value": 100, "label": "cent"},
-    {"value": 1000, "label": "mille"},
-    {"value": 1000000, "label": "million"},
-    {"value": 1000000000, "label": "milliard"},
-    {"value": 1000000000000, "label": "mille milliards"},
-    {"value": 1000000000000000, "label": "quadrillion"},
-    {"value": 1000000000000000000, "label": "quintillion"}
+    {"value": 100, "name": "cent"},
+    {"value": 1000, "name": "mille"},
+    {"value": 1000000, "name": "million"},
+    {"value": 1000000000, "name": "milliard"},
+    {"value": 1000000000000, "name": "mille milliards"},
+    {"value": 1000000000000000, "name": "quadrillion"},
+    {"value": 1000000000000000000, "name": "quintillion"}
   ]
 }

@@ -20,8 +20,8 @@ type Language interface {
 
 type language struct {
 	title        string
-	names        []*numberName
-	labels       []*numberLabel
+	names        []*valueName
+	labels       []*valueName
 	separator    string
 	invertDigits bool
 	minusLabel   string
@@ -39,22 +39,23 @@ func (l language) Format(i uint64) string {
 	// trim off the higher digits which have labels
 	lb, r := l.writeLabels(i)
 	var n string
-	// write digits only if it's > 0 unless requesting zero.
+	// write digits only if remaining > 0 or requesting zero itself.
 	if i == 0 || r > 0 {
 		n = l.writeName(r)
 	}
-	var sp string
-	if len(lb) > 0 && len(n) > 0 {
-		sp = l.separator
+	sb := NewStringBuffer(lb)
+	// Add digit seperator as required
+	if lb != "" && n != "" {
+		sb.Append(l.separator)
 	}
-	return NewStringBuffer().Append(lb).Append(sp).Append(n).String()
+	return sb.Append(n).String()
 }
 
 func (l language) writeName(i uint64) string {
 	var names []string
 	for {
 		nm := l.nameFor(i)
-		n := nm.Name
+		n := nm.String()
 		i = i - nm.Value
 		names = append(names, n)
 		if i == 0 {
@@ -74,13 +75,13 @@ func (l language) writeLabels(i uint64) (string, uint64) {
 		lv := valueDigits(lb.Value, i)
 		// recursive call to get the value string to label
 		vs := l.Format(lv)
-		sb.Append(fmt.Sprintf("%s %s", vs, lb.Label))
+		sb.Append(fmt.Sprintf("%s %s", vs, lb.String()))
 		i = valueRemain(lb.Value, i)
 	}
 	return sb.String(), i
 }
 
-func (l language) nameFor(i uint64) *numberName {
+func (l language) nameFor(i uint64) *valueName {
 	name := l.names[0]
 	for _, lb := range l.names[1:] {
 		if lb.Value > i {
@@ -91,8 +92,8 @@ func (l language) nameFor(i uint64) *numberName {
 	return name
 }
 
-func (l language) labelFor(i uint64) *numberLabel {
-	var label *numberLabel
+func (l language) labelFor(i uint64) *valueName {
+	var label *valueName
 	for _, lb := range l.labels {
 		if lb.Value > i {
 			break
@@ -113,12 +114,12 @@ func (l language) invertedLastToFirst(s []string) []string {
 func (l *language) UnmarshalJSON(bytes []byte) error {
 	// using standard json decoding, into a psudo instance, then sorts bases before assigning to this.
 	var lp struct {
-		Title        string         `json:"title"`
-		Names        []*numberName  `json:"names"`
-		Labels       []*numberLabel `json:"labels,omitempty"`
-		Separator    string         `json:"separator,omitempty"`
-		InvertDigits bool           `json:"invert-digits,omitempty"`
-		MinusLabel   string         `json:"minus"`
+		Title        string       `json:"title"`
+		Names        []*valueName `json:"names"`
+		Labels       []*valueName `json:"labels,omitempty"`
+		Separator    string       `json:"separator,omitempty"`
+		InvertDigits bool         `json:"invert-digits,omitempty"`
+		MinusLabel   string       `json:"minus"`
 	}
 	if err := json.Unmarshal(bytes, &lp); err != nil {
 		return err

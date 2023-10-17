@@ -33,20 +33,20 @@
     {"value": 90, "name": "noventa"}
   ],
   "labels": [
-    {"value": 100, "label": "cien"},
-    {"value": 200, "label": "doscientos"},
-    {"value": 300, "label": "trescientos"},
-    {"value": 400, "label": "cuatrocientos"},
-    {"value": 500, "label": "quinientos"},
-    {"value": 600, "label": "seiscientos"},
-    {"value": 700, "label": "setecientos"},
-    {"value": 800, "label": "ochocientos"},
-    {"value": 900, "label": "novecientos"},
-    {"value": 1000, "label": "mil"},
-    {"value": 1000000, "label": "millón"},
-    {"value": 1000000000, "label": "mil millones"},
-    {"value": 1000000000000, "label": "billón"},
-    {"value": 1000000000000000, "label": "cuatrillón"},
-    {"value": 1000000000000000000, "label": "trillón"}
+    {"value": 100, "name": "cien"},
+    {"value": 200, "name": "doscientos"},
+    {"value": 300, "name": "trescientos"},
+    {"value": 400, "name": "cuatrocientos"},
+    {"value": 500, "name": "quinientos"},
+    {"value": 600, "name": "seiscientos"},
+    {"value": 700, "name": "setecientos"},
+    {"value": 800, "name": "ochocientos"},
+    {"value": 900, "name": "novecientos"},
+    {"value": 1000, "name": "mil"},
+    {"value": 1000000, "name": "millón"},
+    {"value": 1000000000, "name": "mil millones"},
+    {"value": 1000000000000, "name": "billón"},
+    {"value": 1000000000000000, "name": "cuatrillón"},
+    {"value": 1000000000000000000, "name": "trillón"}
   ]
 }
