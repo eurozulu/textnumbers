@@ -15,7 +15,7 @@ Outputs: `un mille deux cent et trente quatre`
 `tn 1234 as dutch`  
 Outputs: `een duizend twee honderd en vier en dertig`
 
-  
+Supports positive and negitive numbers upto 18446744073709551615 (Unsigned 64 bit)  
 
 ### Languages
 French, Dutch and English are provided with English being the default.  
