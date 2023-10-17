@@ -30,7 +30,7 @@ The document should be a single json object with the following properties:
 `title`:   The name of the language  
 `separator`: An optional string to insert between labels and digits. e.g. "AND" = one hundred AND one  
 `minus`: The label to give negative numbers   
-`invert-digits`:  An optional bool flag which flips the final digits, adding the seperater.  
+`invert-digits`:  An optional bool flag which flips the final digits, adding the seperator.  
 e.g. 23 in Dutch = drie en twintig  (3 and twenty)  
 `names`: An array of named values  
 `labels`: An Array of value labels  
@@ -57,7 +57,7 @@ Generally, in most languages, all values up to twenty have their own name.
 Value Labels are names assigned to a group of values, based on the value Base.  
 The `labels` array should contain an array of objects containing the following properties:  
 `value`: The numeric value it represents   
-`name`: The string name to assign to that value  
+`label`: The string label to assign to that value  
 e.g.
 >{ "value": 1000, "label": "thousand"}`  
 
@@ -68,6 +68,6 @@ e.g. 12000 on base 3 = digits 12. 12 = twelve, with a label of "thousand".
 A Number is assigned to the Label with the highest value which does not exceed the Number itself.  
 i.e. if only two labels with values 1000 and 1000000,
 Any number between 1000-999999 will be assigned the 1000 label,  
-any value greater or equal to 1000000 assigned the million label.  
-any number less than 1000 will not be assigned a label. 
+any number greater or equal to 1000000 assigned the million label.  
+any number less than 1000 will not be assigned a label.
 
