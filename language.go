@@ -14,7 +14,8 @@ const languageFolderName = "languages"
 
 type Language interface {
 	Title() string
-	Format(i int64) string
+	Format(i uint64) string
+	MinusLabel() string
 }
 
 type language struct {
@@ -30,13 +31,11 @@ func (l language) Title() string {
 	return l.title
 }
 
-func (l language) Format(i int64) string {
-	var minus string
-	isMinus := i < 0
-	if isMinus {
-		i = -i
-		minus = l.minusLabel
-	}
+func (l language) MinusLabel() string {
+	return l.minusLabel
+}
+
+func (l language) Format(i uint64) string {
 	// trim off the higher digits which have labels
 	lb, r := l.writeLabels(i)
 	var n string
@@ -48,11 +47,10 @@ func (l language) Format(i int64) string {
 	if len(lb) > 0 && len(n) > 0 {
 		sp = l.separator
 	}
-
-	return NewStringBuffer().Append(minus).Append(lb).Append(sp).Append(n).String()
+	return NewStringBuffer().Append(lb).Append(sp).Append(n).String()
 }
 
-func (l language) writeName(i int64) string {
+func (l language) writeName(i uint64) string {
 	var names []string
 	for {
 		nm := l.nameFor(i)
@@ -69,7 +67,7 @@ func (l language) writeName(i int64) string {
 	return strings.Join(names, " ")
 }
 
-func (l language) writeLabels(i int64) (string, int64) {
+func (l language) writeLabels(i uint64) (string, uint64) {
 	sb := NewStringBuffer()
 	lb := l.labelFor(i)
 	for ; lb != nil; lb = l.labelFor(i) {
@@ -82,7 +80,7 @@ func (l language) writeLabels(i int64) (string, int64) {
 	return sb.String(), i
 }
 
-func (l language) nameFor(i int64) *numberName {
+func (l language) nameFor(i uint64) *numberName {
 	name := l.names[0]
 	for _, lb := range l.names[1:] {
 		if lb.Value > i {
@@ -93,7 +91,7 @@ func (l language) nameFor(i int64) *numberName {
 	return name
 }
 
-func (l language) labelFor(i int64) *numberLabel {
+func (l language) labelFor(i uint64) *numberLabel {
 	var label *numberLabel
 	for _, lb := range l.labels {
 		if lb.Value > i {
@@ -158,7 +156,7 @@ func (l *language) validate() error {
 			return fmt.Errorf("label values must be higher than all title values")
 		}
 	}
-	m := map[int64]bool{}
+	m := map[uint64]bool{}
 	for _, n := range l.names {
 		if m[n.Value] {
 			return fmt.Errorf("title and label values must be unique, %d already exists", n.Value)
@@ -174,12 +172,12 @@ func (l *language) validate() error {
 	return nil
 }
 
-func valueDigits(value, i int64) int64 {
+func valueDigits(value, i uint64) uint64 {
 	base := Base(Number(value).DigitCount() - 1)
 	return Number(i).DigitsAt(base)
 }
 
-func valueRemain(value, i int64) int64 {
+func valueRemain(value, i uint64) uint64 {
 	b := Base(Number(value).DigitCount() - 1)
 	if b == 0 {
 		return 0

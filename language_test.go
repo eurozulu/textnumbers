@@ -1,6 +1,9 @@
 package textnumbers
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestOpenLanguage(t *testing.T) {
 	if _, err := openTestLanguage(); err != nil {
@@ -202,6 +205,11 @@ func TestLanguage_Format_Labels(t *testing.T) {
 		t.Errorf("unexpected number format.  Expected '%s' found '%s'", e, f)
 	}
 
+	e = "eighteen quintillion four thousand four hundred and sixty seven quadrillion fourty four trillion seventy three billion seven hundred and nine million five hundred and fifty one thousand six hundred and fifteen"
+	f = l.Format(uint64(math.MaxUint64)) // 18446744073709551615
+	if f != e {
+		t.Errorf("unexpected number format.  Expected '%s' found '%s'", e, f)
+	}
 }
 
 func openTestLanguage() (Language, error) {

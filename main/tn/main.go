@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -12,42 +13,57 @@ import (
 const defaultLanguage = "english"
 
 func main() {
-	n, lang, err := readArgs(os.Args[1:])
+	args, err := readArgs(os.Args[1:])
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	l, err := textnumbers.OpenLanguage(lang)
+	l, err := textnumbers.OpenLanguage(args.language)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	fmt.Println(l.Format(n))
+	if args.isMinus {
+		fmt.Printf("%s ", l.MinusLabel())
+	}
+	fmt.Println(l.Format(args.value))
 }
 
-func readArgs(args []string) (int64, string, error) {
+func readArgs(args []string) (*myargs, error) {
 	if len(args) < 1 {
-		return 0, "", fmt.Errorf("provide a number to convert")
+		return nil, fmt.Errorf("provide a number to convert")
 	}
-	if len(args[0]) >= 20 {
-		return 0, "", fmt.Errorf("provided a number is too long")
+
+	var found myargs
+	found.isMinus = strings.HasPrefix(args[0], "-")
+	if found.isMinus {
+		args[0] = strings.TrimLeft(args[0], "-")
 	}
-	i, err := strconv.ParseInt(args[0], 10, 64)
+	i, err := strconv.ParseUint(args[0], 10, 64)
 	if err != nil {
-		return 0, "", err
+		if strings.HasSuffix(err.Error(), strconv.ErrRange.Error()) {
+			return nil, fmt.Errorf("The number %s is too big to parse. Maximum value is: %v", args[0], uint64(math.MaxUint64))
+		}
+		return nil, err
 	}
-	var lang string
+	found.value = i
 	ix := findIndex("as", args)
 	if ix > 0 {
 		if ix+1 >= len(args) {
-			return 0, "", fmt.Errorf(("must provide a language name."))
+			return nil, fmt.Errorf(("must provide a language name."))
 		}
-		lang = args[ix+1]
+		found.language = args[ix+1]
 	} else {
-		lang = defaultLanguage
+		found.language = defaultLanguage
 	}
-	return i, lang, nil
+	return &found, nil
+}
+
+type myargs struct {
+	value    uint64
+	isMinus  bool
+	language string
 }
 
 func findIndex(s string, ss []string) int {
