@@ -2,8 +2,9 @@ package textnumbers
 
 // numberName represents a direct mapping of a single value to a Name
 type numberName struct {
-	Name  string `json:"name"`
-	Value int64  `json:"value"`
+	Name   string `json:"name"`
+	Value  int64  `json:"value"`
+	Format string `json:"format"`
 }
 
 func (v numberName) String() string {

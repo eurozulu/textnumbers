@@ -1,7 +1,7 @@
 {
   "title": "Dutch",
   "separator": "en",
-  "invert-name": true,
+  "invert-digits": true,
   "minus": "min",
   "names": [
     {"value": 0, "name": "nul"},

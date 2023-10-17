@@ -18,12 +18,12 @@ type Language interface {
 }
 
 type language struct {
-	title      string
-	names      []*numberName
-	labels     []*numberLabel
-	separator  string
-	invertName bool
-	minusLabel string
+	title        string
+	names        []*numberName
+	labels       []*numberLabel
+	separator    string
+	invertDigits bool
+	minusLabel   string
 }
 
 func (l language) Title() string {
@@ -40,6 +40,7 @@ func (l language) Format(i int64) string {
 	// trim off the higher digits which have labels
 	lb, r := l.writeLabels(i)
 	var n string
+	// write digits only if it's > 0 unless requesting zero.
 	if i == 0 || r > 0 {
 		n = l.writeName(r)
 	}
@@ -55,23 +56,17 @@ func (l language) writeName(i int64) string {
 	var names []string
 	for {
 		nm := l.nameFor(i)
-		names = append(names, nm.Name)
+		n := nm.Name
 		i = i - nm.Value
+		names = append(names, n)
 		if i == 0 {
 			break
 		}
 	}
-	if l.invertName && len(names) > 1 {
-		return l.invertedName(names)
+	if l.invertDigits {
+		names = l.invertedLastToFirst(names)
 	}
 	return strings.Join(names, " ")
-}
-
-func (l language) invertedName(s []string) string {
-	last := len(s) - 1
-	ss := []string{s[last], l.separator}
-	ss = append(ss, s[:last]...)
-	return strings.Join(ss, " ")
 }
 
 func (l language) writeLabels(i int64) (string, int64) {
@@ -109,15 +104,23 @@ func (l language) labelFor(i int64) *numberLabel {
 	return label
 }
 
+func (l language) invertedLastToFirst(s []string) []string {
+	if len(s) < 2 {
+		return s
+	}
+	last := len(s) - 1
+	return append([]string{s[last], l.separator}, s[:last]...)
+}
+
 func (l *language) UnmarshalJSON(bytes []byte) error {
 	// using standard json decoding, into a psudo instance, then sorts bases before assigning to this.
 	var lp struct {
-		Title      string         `json:"title"`
-		Names      []*numberName  `json:"names"`
-		Labels     []*numberLabel `json:"labels,omitempty"`
-		Separator  string         `json:"separator,omitempty"`
-		InvertName bool           `json:"invert-name,omitempty"`
-		MinusLabel string         `json:"minus"`
+		Title        string         `json:"title"`
+		Names        []*numberName  `json:"names"`
+		Labels       []*numberLabel `json:"labels,omitempty"`
+		Separator    string         `json:"separator,omitempty"`
+		InvertDigits bool           `json:"invert-digits,omitempty"`
+		MinusLabel   string         `json:"minus"`
 	}
 	if err := json.Unmarshal(bytes, &lp); err != nil {
 		return err
@@ -136,7 +139,7 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 	l.names = lp.Names
 	l.labels = lp.Labels
 	l.separator = lp.Separator
-	l.invertName = lp.InvertName
+	l.invertDigits = lp.InvertDigits
 	l.minusLabel = lp.MinusLabel
 	return l.validate()
 }
