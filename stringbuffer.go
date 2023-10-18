@@ -10,6 +10,7 @@ import (
 type StringBuffer interface {
 	fmt.Stringer
 	Append(s string) StringBuffer
+	Length() int
 	Reset()
 }
 
@@ -23,6 +24,10 @@ func (sb stringBuffer) String() string {
 
 func (sb stringBuffer) Reset() {
 	sb.buf.Reset()
+}
+
+func (sb stringBuffer) Length() int {
+	return sb.buf.Len()
 }
 
 func (sb stringBuffer) Append(s string) StringBuffer {

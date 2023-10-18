@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -21,8 +22,7 @@ type Language interface {
 type language struct {
 	title        string
 	names        []*valueName
-	labels       []*valueName
-	separator    string
+	separators   []*valueName
 	invertDigits bool
 	minusLabel   string
 }
@@ -36,52 +36,45 @@ func (l language) MinusLabel() string {
 }
 
 func (l language) Format(i uint64) string {
-	// trim off the higher digits which have labels
-	lb, r := l.writeLabels(i)
-	var n string
-	// write digits only if remaining > 0 or requesting zero itself.
-	if i == 0 || r > 0 {
-		n = l.writeName(r)
-	}
-	sb := NewStringBuffer(lb)
-	// Add digit seperator as required
-	if lb != "" && n != "" {
-		sb.Append(l.separator)
-	}
-	return sb.Append(n).String()
-}
-
-func (l language) writeName(i uint64) string {
-	var names []string
+	var digits []string
 	for {
-		nm := l.nameFor(i)
-		n := nm.String()
-		i = i - nm.Value
-		names = append(names, n)
+		vn := l.valueNameFor(i)
+		vb := vn.ValueBase()
+
+		var vs string // formatted string of value
+		var vf uint64 // value that's been formatted
+		var sp *valueName
+		if vn.IsLabel() {
+			// Format the value at the base defined by valueName (12345 @base 3 = 12, @base 1 = 45)
+			d := Number(i).DigitsAt(vb)
+			vs = fmt.Sprintf(vn.String(), l.Format(d))
+			// Formatted only the digits of the value-name base or above.
+			vf = d * uint64(math.Pow10(int(vb)))
+			sp = l.seperatorFor(i - vf)
+		} else {
+			// Not a label, maps directly to the name
+			vs = vn.String()
+			// formatted entire value
+			vf = vn.Value
+		}
+
+		digits = append(digits, vs)
+		// insert seperator if needed
+		if sp != nil {
+			digits = append(digits, sp.Name)
+		}
+
+		i = (i - vf)
 		if i == 0 {
+			// Last base been processed
 			break
 		}
+
 	}
-	if l.invertDigits {
-		names = l.invertedLastToFirst(names)
-	}
-	return strings.Join(names, " ")
+	return strings.Join(digits, " ")
 }
 
-func (l language) writeLabels(i uint64) (string, uint64) {
-	sb := NewStringBuffer()
-	lb := l.labelFor(i)
-	for ; lb != nil; lb = l.labelFor(i) {
-		lv := valueDigits(lb.Value, i)
-		// recursive call to get the value string to label
-		vs := l.Format(lv)
-		sb.Append(fmt.Sprintf("%s %s", vs, lb.String()))
-		i = valueRemain(lb.Value, i)
-	}
-	return sb.String(), i
-}
-
-func (l language) nameFor(i uint64) *valueName {
+func (l language) valueNameFor(i uint64) *valueName {
 	name := l.names[0]
 	for _, lb := range l.names[1:] {
 		if lb.Value > i {
@@ -92,23 +85,16 @@ func (l language) nameFor(i uint64) *valueName {
 	return name
 }
 
-func (l language) labelFor(i uint64) *valueName {
-	var label *valueName
-	for _, lb := range l.labels {
-		if lb.Value > i {
-			break
+func (l language) seperatorFor(v uint64) *valueName {
+	if v == 0 {
+		return nil
+	}
+	for _, dl := range l.separators {
+		if dl.Value >= v {
+			return dl
 		}
-		label = lb
 	}
-	return label
-}
-
-func (l language) invertedLastToFirst(s []string) []string {
-	if len(s) < 2 {
-		return s
-	}
-	last := len(s) - 1
-	return append([]string{s[last], l.separator}, s[:last]...)
+	return nil
 }
 
 func (l *language) UnmarshalJSON(bytes []byte) error {
@@ -116,8 +102,7 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 	var lp struct {
 		Title        string       `json:"title"`
 		Names        []*valueName `json:"names"`
-		Labels       []*valueName `json:"labels,omitempty"`
-		Separator    string       `json:"separator,omitempty"`
+		Separator    []*valueName `json:"separator,omitempty"`
 		InvertDigits bool         `json:"invert-digits,omitempty"`
 		MinusLabel   string       `json:"minus"`
 	}
@@ -128,16 +113,14 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 	sort.Slice(lp.Names, func(i, j int) bool {
 		return lp.Names[i].Value < lp.Names[j].Value
 	})
-
-	// sort labels lowest value first
-	sort.Slice(lp.Labels, func(i, j int) bool {
-		return lp.Labels[i].Value < lp.Labels[j].Value
+	// sort delimiters lowest value first
+	sort.Slice(lp.Separator, func(i, j int) bool {
+		return lp.Separator[i].Value < lp.Separator[j].Value
 	})
 
 	l.title = lp.Title
 	l.names = lp.Names
-	l.labels = lp.Labels
-	l.separator = lp.Separator
+	l.separators = lp.Separator
 	l.invertDigits = lp.InvertDigits
 	l.minusLabel = lp.MinusLabel
 	return l.validate()
@@ -150,41 +133,7 @@ func (l *language) validate() error {
 	if l.names[0].Value != 0 {
 		return fmt.Errorf("no zero value title found")
 	}
-
-	// ensure all labels are higher than names
-	if len(l.labels) > 0 {
-		if l.names[len(l.names)-1].Value > l.labels[0].Value {
-			return fmt.Errorf("label values must be higher than all title values")
-		}
-	}
-	m := map[uint64]bool{}
-	for _, n := range l.names {
-		if m[n.Value] {
-			return fmt.Errorf("title and label values must be unique, %d already exists", n.Value)
-		}
-		m[n.Value] = true
-	}
-	for _, lb := range l.labels {
-		if m[lb.Value] {
-			return fmt.Errorf("title and label values must be unique, %d already exists", lb.Value)
-		}
-		m[lb.Value] = true
-	}
 	return nil
-}
-
-func valueDigits(value, i uint64) uint64 {
-	base := Base(Number(value).DigitCount() - 1)
-	return Number(i).DigitsAt(base)
-}
-
-func valueRemain(value, i uint64) uint64 {
-	b := Base(Number(value).DigitCount() - 1)
-	if b == 0 {
-		return 0
-	}
-	ii := Number(i).ValueAt(b - 1)
-	return ii
 }
 
 func cleanName(name string) string {

@@ -1,7 +1,7 @@
 {
   "title": "English",
-  "separator": "and",
   "minus": "minus",
+  "separator": [{"value":99, "name": "and"}],
   "names": [
     {"value": 0, "name": "zero"},
     {"value": 1, "name": "one"},
@@ -30,15 +30,13 @@
     {"value": 60, "name": "sixty"},
     {"value": 70, "name": "seventy"},
     {"value": 80, "name": "eighty"},
-    {"value": 90, "name": "ninety"}
-  ],
-  "labels": [
-    {"value": 100, "name": "hundred"},
-    {"value": 1000, "name": "thousand"},
-    {"value": 1000000, "name": "million"},
-    {"value": 1000000000, "name": "billion"},
-    {"value": 1000000000000, "name": "trillion"},
-    {"value": 1000000000000000, "name": "quadrillion"},
-    {"value": 1000000000000000000, "name": "quintillion"}
+    {"value": 90, "name": "ninety"},
+    {"value": 100, "name": "%v hundred"},
+    {"value": 1000, "name": "%v thousand"},
+    {"value": 1000000, "name": "%v million"},
+    {"value": 1000000000, "name": "%v billion"},
+    {"value": 1000000000000, "name": "%v trillion"},
+    {"value": 1000000000000000, "name": "%v quadrillion"},
+    {"value": 1000000000000000000, "name": "%v quintillion"}
   ]
 }

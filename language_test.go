@@ -121,12 +121,9 @@ func TestLanguage_Format_Names(t *testing.T) {
 	if f != e {
 		t.Errorf("unexpected number format.  Expected '%s' found '%s'", e, f)
 	}
-}
 
-func TestLanguage_Format_Labels(t *testing.T) {
-	l, _ := openTestLanguage()
-	e := "one hundred"
-	f := l.Format(100)
+	e = "one hundred"
+	f = l.Format(100)
 	if f != e {
 		t.Errorf("unexpected number format.  Expected '%s' found '%s'", e, f)
 	}

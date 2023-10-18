@@ -32,8 +32,8 @@ The document should be a single json object with the following properties:
 `minus`: The label to give negative numbers   
 `invert-digits`:  An optional bool flag which flips the final digits, adding the seperator.  
 e.g. 23 in Dutch = drie en twintig  (3 and twenty)  
-`names`: An array of named values  
-`labels`: An Array of value labels  
+`names`: An array of value names  for digit labels  
+`labels`: An array of value names for group labels  
 e.g.
 >{  
     "title": "English",  
@@ -44,23 +44,19 @@ e.g.
 }
 
 #### Value Names
-Value Names are names assigned to a single value.  
-The `names` array should contain an array of objects containing the following properties:  
-`value`: The numeric value it represents   
+Value Names are string names mapped to a value and have two properties:  
 `name`: The string name to assign to that value  
+`value`: The numeric value it represents   
 e.g.  
 >{ "value": 2, "name": "two"}  
 
-Generally, in most languages, all values up to twenty have their own name.  
+##### names
+The `names` array should contain an array of valueNames which map a single value to a specific name.  
+i.e. digits.  Generally, in most languages, all numbers up to twenty have their own name.  
   
-#### Value Labels
-Value Labels are names assigned to a group of values, based on the value Base.  
-The `labels` array should contain an array of objects containing the following properties:  
-`value`: The numeric value it represents   
-`label`: The string label to assign to that value  
-e.g.
->{ "value": 1000, "label": "thousand"}`  
-
+##### labels
+The `labels` array should contain an array of valueNames 
+which values applies to a group of numbers.  
 A Labels value defines the base of the label, for 1000, base is 3.
 Any digits from base 3 or higher are then converted into text before the
 label is finally applied.  

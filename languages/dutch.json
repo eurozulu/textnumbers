@@ -1,6 +1,6 @@
 {
   "title": "Dutch",
-  "separator": "en",
+  "separator": [{"base":2, "name": "en"}, {"base": 1, "name": "<<en"}],
   "invert-digits": true,
   "minus": "min",
   "names": [
@@ -31,15 +31,13 @@
     {"value": 60, "name": "zestig"},
     {"value": 70, "name": "zeventig"},
     {"value": 80, "name": "tachtig"},
-    {"value": 90, "name": "negentig"}
-  ],
-  "labels": [
-    {"value": 100, "name": "honderd"},
-    {"value": 1000, "name": "duizend"},
-    {"value": 1000000, "name": "miljoen"},
-    {"value": 1000000000, "name": "miljard"},
-    {"value": 1000000000000, "name": "biljoen"},
-    {"value": 1000000000000000, "name": "quadriljoen"},
-    {"value": 1000000000000000000, "name": "quintiljoen"}
+    {"value": 90, "name": "negentig"},
+    {"value": 100, "name": "%v honderd"},
+    {"value": 1000, "name": "%v duizend"},
+    {"value": 1000000, "name": "%v miljoen"},
+    {"value": 1000000000, "name": "%v miljard"},
+    {"value": 1000000000000, "name": "%v biljoen"},
+    {"value": 1000000000000000, "name": "%v quadriljoen"},
+    {"value": 1000000000000000000, "name": "%v quintiljoen"}
   ]
 }

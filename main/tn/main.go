@@ -24,10 +24,17 @@ func main() {
 		log.Println(err)
 		return
 	}
+	v := l.Format(args.value)
 	if args.isMinus {
-		fmt.Printf("%s ", l.MinusLabel())
+		v = strings.Join([]string{l.MinusLabel(), v}, " ")
 	}
-	fmt.Println(l.Format(args.value))
+
+	if !args.quiet {
+		fmt.Printf("%s in %s:\n%s\n", os.Args[1], args.language, v)
+	} else {
+		fmt.Println(v)
+	}
+
 }
 
 func readArgs(args []string) (*myargs, error) {
@@ -36,11 +43,12 @@ func readArgs(args []string) (*myargs, error) {
 	}
 
 	var found myargs
-	found.isMinus = strings.HasPrefix(args[0], "-")
+	number := args[0]
+	found.isMinus = strings.HasPrefix(number, "-")
 	if found.isMinus {
-		args[0] = strings.TrimLeft(args[0], "-")
+		number = strings.TrimLeft(number, "-")
 	}
-	i, err := strconv.ParseUint(args[0], 10, 64)
+	i, err := strconv.ParseUint(number, 10, 64)
 	if err != nil {
 		if strings.HasSuffix(err.Error(), strconv.ErrRange.Error()) {
 			return nil, fmt.Errorf("The number %s is too big to parse. Maximum value is: %v", args[0], uint64(math.MaxUint64))
@@ -57,6 +65,9 @@ func readArgs(args []string) (*myargs, error) {
 	} else {
 		found.language = defaultLanguage
 	}
+	ix = findIndex("-q", args)
+	found.quiet = ix >= 0
+
 	return &found, nil
 }
 
@@ -64,6 +75,7 @@ type myargs struct {
 	value    uint64
 	isMinus  bool
 	language string
+	quiet    bool
 }
 
 func findIndex(s string, ss []string) int {
