@@ -22,7 +22,7 @@ type Language interface {
 type language struct {
 	title        string
 	names        []*valueName
-	separators   []*valueName
+	separators   []*valueSeperator
 	invertDigits bool
 	minusLabel   string
 }
@@ -39,39 +39,53 @@ func (l language) Format(i uint64) string {
 	var digits []string
 	for {
 		vn := l.valueNameFor(i)
-		vb := vn.ValueBase()
+		nb := vn.ValueBase()
 
-		var vs string // formatted string of value
-		var vf uint64 // value that's been formatted
-		var sp *valueName
+		var ns string // formatted string of number
+		var nf uint64 // number that's been formatted
 		if vn.IsLabel() {
 			// Format the value at the base defined by valueName (12345 @base 3 = 12, @base 1 = 45)
-			d := Number(i).DigitsAt(vb)
-			vs = fmt.Sprintf(vn.String(), l.Format(d))
+			d := Number(i).DigitsAt(nb)
+			ns = fmt.Sprintf(vn.String(), l.Format(d))
 			// Formatted only the digits of the value-name base or above.
-			vf = d * uint64(math.Pow10(int(vb)))
-			sp = l.seperatorFor(i - vf)
+			nf = d * uint64(math.Pow10(int(nb)))
+
 		} else {
 			// Not a label, maps directly to the name
-			vs = vn.String()
+			ns = vn.String()
 			// formatted entire value
-			vf = vn.Value
+			nf = vn.Value
 		}
+		digits = append(digits, ns)
+		nn := i - nf // The next number to format
 
-		digits = append(digits, vs)
 		// insert seperator if needed
-		if sp != nil {
-			digits = append(digits, sp.Name)
+		if nn > 0 {
+			if sp := l.seperatorFor(i); sp != nil && nn < sp.Value {
+				// If seperator reverse, collect next value and insert with seperator, prior to last value (just inserted)
+				if sp.ReverseDigits {
+					digits = insertIntoSlice(digits, []string{l.Format(nn), sp.String()}, len(digits)-1)
+					nn = 0
+				} else {
+					digits = append(digits, sp.String())
+				}
+			}
 		}
 
-		i = (i - vf)
-		if i == 0 {
+		if nn == 0 {
 			// Last base been processed
 			break
 		}
-
+		i = nn
 	}
 	return strings.Join(digits, " ")
+}
+
+func insertIntoSlice(s, insert []string, index int) []string {
+	if index < len(s) {
+		insert = append(insert, s[index:]...)
+	}
+	return append(s[:index], insert...)
 }
 
 func (l language) valueNameFor(i uint64) *valueName {
@@ -85,26 +99,25 @@ func (l language) valueNameFor(i uint64) *valueName {
 	return name
 }
 
-func (l language) seperatorFor(v uint64) *valueName {
-	if v == 0 {
-		return nil
-	}
-	for _, dl := range l.separators {
-		if dl.Value >= v {
-			return dl
+// seperatorFor returns the seperator with the biggest value available which is <= given v
+func (l language) seperatorFor(v uint64) *valueSeperator {
+	var found *valueSeperator
+	for _, sp := range l.separators {
+		if sp.Value > v {
+			break
 		}
+		found = sp
 	}
-	return nil
+	return found
 }
 
 func (l *language) UnmarshalJSON(bytes []byte) error {
 	// using standard json decoding, into a psudo instance, then sorts bases before assigning to this.
 	var lp struct {
-		Title        string       `json:"title"`
-		Names        []*valueName `json:"names"`
-		Separator    []*valueName `json:"separator,omitempty"`
-		InvertDigits bool         `json:"invert-digits,omitempty"`
-		MinusLabel   string       `json:"minus"`
+		Title      string            `json:"title"`
+		Names      []*valueName      `json:"names"`
+		Separators []*valueSeperator `json:"separators,omitempty"`
+		MinusLabel string            `json:"minus"`
 	}
 	if err := json.Unmarshal(bytes, &lp); err != nil {
 		return err
@@ -114,14 +127,13 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 		return lp.Names[i].Value < lp.Names[j].Value
 	})
 	// sort delimiters lowest value first
-	sort.Slice(lp.Separator, func(i, j int) bool {
-		return lp.Separator[i].Value < lp.Separator[j].Value
+	sort.Slice(lp.Separators, func(i, j int) bool {
+		return lp.Separators[i].Value < lp.Separators[j].Value
 	})
 
 	l.title = lp.Title
 	l.names = lp.Names
-	l.separators = lp.Separator
-	l.invertDigits = lp.InvertDigits
+	l.separators = lp.Separators
 	l.minusLabel = lp.MinusLabel
 	return l.validate()
 }

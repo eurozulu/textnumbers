@@ -1,6 +1,6 @@
 {
   "title": "Spanish",
-  "separator": "to",
+  "separators": [{"value":100, "name": "to"}],
   "minus": "menos",
   "names": [
     {"value": 0, "name": "zéro"},
@@ -30,9 +30,7 @@
     {"value": 60, "name": "sesenta"},
     {"value": 70, "name": "setenta"},
     {"value": 80, "name": "ochenta"},
-    {"value": 90, "name": "noventa"}
-  ],
-  "labels": [
+    {"value": 90, "name": "noventa"},
     {"value": 100, "name": "cien"},
     {"value": 200, "name": "doscientos"},
     {"value": 300, "name": "trescientos"},
@@ -42,11 +40,11 @@
     {"value": 700, "name": "setecientos"},
     {"value": 800, "name": "ochocientos"},
     {"value": 900, "name": "novecientos"},
-    {"value": 1000, "name": "mil"},
-    {"value": 1000000, "name": "millón"},
-    {"value": 1000000000, "name": "mil millones"},
-    {"value": 1000000000000, "name": "billón"},
-    {"value": 1000000000000000, "name": "cuatrillón"},
-    {"value": 1000000000000000000, "name": "trillón"}
+    {"value": 1000, "name": "%v mil"},
+    {"value": 1000000, "name": "%v millón"},
+    {"value": 1000000000, "name": "%v mil millones"},
+    {"value": 1000000000000, "name": "%v billón"},
+    {"value": 1000000000000000, "name": "%v cuatrillón"},
+    {"value": 1000000000000000000, "name": "%v trillón"}
   ]
 }

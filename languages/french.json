@@ -1,6 +1,6 @@
 {
   "title": "French",
-  "separator": "et",
+  "separators": [{"value":100, "name": "et"}],
   "minus": "moins",
   "names": [
     {"value": 0, "name": "zéro"},
@@ -30,15 +30,13 @@
     {"value": 60, "name": "soixante"},
     {"value": 70, "name": "soixante-dix"},
     {"value": 80, "name": "quatre-vingts"},
-    {"value": 90, "name": "quatre-vingts-dix"}
-  ],
-  "labels": [
-    {"value": 100, "name": "cent"},
-    {"value": 1000, "name": "mille"},
-    {"value": 1000000, "name": "million"},
-    {"value": 1000000000, "name": "milliard"},
-    {"value": 1000000000000, "name": "mille milliards"},
-    {"value": 1000000000000000, "name": "quadrillion"},
-    {"value": 1000000000000000000, "name": "quintillion"}
+    {"value": 90, "name": "quatre-vingts-dix"},
+    {"value": 100, "name": "%v cent"},
+    {"value": 1000, "name": "%v mille"},
+    {"value": 1000000, "name": "%v million"},
+    {"value": 1000000000, "name": "%v milliard"},
+    {"value": 1000000000000, "name": "%v mille milliards"},
+    {"value": 1000000000000000, "name": "%v quadrillion"},
+    {"value": 1000000000000000000, "name": "%v quintillion"}
   ]
 }

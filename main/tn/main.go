@@ -57,6 +57,9 @@ func readArgs(args []string) (*myargs, error) {
 	}
 	found.value = i
 	ix := findIndex("as", args)
+	if ix < 0 {
+		ix = findIndex("in", args)
+	}
 	if ix > 0 {
 		if ix+1 >= len(args) {
 			return nil, fmt.Errorf(("must provide a language name."))

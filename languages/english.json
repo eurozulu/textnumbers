@@ -1,7 +1,7 @@
 {
   "title": "English",
   "minus": "minus",
-  "separator": [{"value":99, "name": "and"}],
+  "separators": [{"value":100, "name": "and"}],
   "names": [
     {"value": 0, "name": "zero"},
     {"value": 1, "name": "one"},

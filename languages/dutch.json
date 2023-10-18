@@ -1,7 +1,6 @@
 {
   "title": "Dutch",
-  "separator": [{"base":2, "name": "en"}, {"base": 1, "name": "<<en"}],
-  "invert-digits": true,
+  "separators": [{"value":100, "name": "en"}, {"value":10, "name": "en", "reverse":  true }],
   "minus": "min",
   "names": [
     {"value": 0, "name": "nul"},
