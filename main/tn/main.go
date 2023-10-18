@@ -30,7 +30,7 @@ func main() {
 	}
 
 	if !args.quiet {
-		fmt.Printf("%s in %s:\n%s\n", os.Args[1], args.language, v)
+		fmt.Printf("%s in %s:\n%s\n", os.Args[1], l.Title(), v)
 	} else {
 		fmt.Println(v)
 	}
@@ -57,6 +57,9 @@ func readArgs(args []string) (*myargs, error) {
 	}
 	found.value = i
 	ix := findIndex("as", args)
+	if ix < 0 {
+		ix = findIndex("in", args)
+	}
 	if ix > 0 {
 		if ix+1 >= len(args) {
 			return nil, fmt.Errorf(("must provide a language name."))
