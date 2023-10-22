@@ -1,0 +1,28 @@
+{
+  "title": "Roman",
+  "minus": "minus",
+  "no-space-digits": true,
+  "names": [
+    {"value": 0, "name": "zero"},
+    {"value": 1, "name": "I"},
+    {"value": 4, "name": "IV"},
+    {"value": 5, "name": "V"},
+    {"value": 9, "name": "IX"},
+    {"value": 10, "name": "X"},
+    {"value": 40, "name": "XL"},
+    {"value": 50, "name": "L"},
+    {"value": 90, "name": "XC"},
+    {"value": 100, "name": "C"},
+    {"value": 400, "name": "CD"},
+    {"value": 500, "name": "D"},
+    {"value": 900, "name": "CM"},
+    {"value": 1000, "name": "M"},
+    {"value": 4000, "name": "M\u2181"},
+    {"value": 5000, "name": "\u2181"},
+    {"value": 9000, "name": "M\u2182"},
+    {"value": 10000, "name": "\u2182"},
+    {"value": 40000, "name": "\u2182\u2187"},
+    {"value": 50000, "name": "\u2187"},
+    {"value": 100000, "name": "\u2188"}
+  ]
+}
