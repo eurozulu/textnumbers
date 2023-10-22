@@ -24,6 +24,7 @@ type language struct {
 	minusLabel string
 	names      []*valueName
 	separators []*valueSeperator
+	digitSpace string
 }
 
 func (l language) Title() string {
@@ -77,7 +78,7 @@ func (l language) Format(i uint64) string {
 		}
 		i = nn
 	}
-	return strings.Join(digits, " ")
+	return strings.Join(digits, l.digitSpace)
 }
 
 func insertIntoSlice(s, insert []string, index int) []string {
@@ -113,10 +114,11 @@ func (l language) seperatorFor(v uint64) *valueSeperator {
 func (l *language) UnmarshalJSON(bytes []byte) error {
 	// using standard json decoding, into a psudo instance, then sorts bases before assigning to this.
 	var lp struct {
-		Title      string            `json:"title"`
-		Names      []*valueName      `json:"names"`
-		Separators []*valueSeperator `json:"separators,omitempty"`
-		MinusLabel string            `json:"minus"`
+		Title        string            `json:"title"`
+		Names        []*valueName      `json:"names"`
+		Separators   []*valueSeperator `json:"separators,omitempty"`
+		MinusLabel   string            `json:"minus"`
+		NoDigitSpace bool              `json:"no-digit-space"`
 	}
 	if err := json.Unmarshal(bytes, &lp); err != nil {
 		return err
@@ -129,11 +131,15 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 	sort.Slice(lp.Separators, func(i, j int) bool {
 		return lp.Separators[i].Value < lp.Separators[j].Value
 	})
-
+	var ds string
+	if !lp.NoDigitSpace {
+		ds = " "
+	}
 	l.title = lp.Title
 	l.names = lp.Names
 	l.separators = lp.Separators
 	l.minusLabel = lp.MinusLabel
+	l.digitSpace = ds
 	return l.validate()
 }
 
