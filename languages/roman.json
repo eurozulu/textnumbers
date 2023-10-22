@@ -3,7 +3,7 @@
   "minus": "minus",
   "no-digit-space":true,
   "names": [
-    {"value": 0, "name": "zero"},
+    {"value": 0, "name": "nulla"},
     {"value": 1, "name": "I"},
     {"value": 4, "name": "IV"},
     {"value": 5, "name": "V"},

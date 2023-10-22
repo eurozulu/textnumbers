@@ -18,7 +18,7 @@ Outputs: `one thousand two hundred and thirty four`
 Outputs: `un mille deux cent et trente quatre`
 
 `tn 1234 as dutch`  
-Outputs: `een duizend twee honderd en vier en dertig`
+Outputs: `eenduizend tweehonderdvierendertig`
 
 Supports positive and negitive numbers upto 18446744073709551615 (Unsigned 64 bit)  
 `as` and `in` can either be used to specify the language.
@@ -26,7 +26,8 @@ Supports positive and negitive numbers upto 18446744073709551615 (Unsigned 64 bi
 ### Languages
 
 French, Dutch and English are provided with English being the default.  
-Languages are expressed as json files, located in the `languages` directory, which must reside in the same directory as
+Some experimental languages (unfinshed) also included: Spanish, Roman  
+Languages are expressed as json files, located in the `languages/` directory, which must reside in the same directory as
 the executable.  
 Use the sample files as an example of the structure.
 
@@ -40,6 +41,8 @@ The document should be a single json object with the following properties:
 `minus`: The label to give negative numbers  
 `names`: A list of value names of digits or groups of digits  
 `separators`: An optional list of seperators to insert between specific value digits.  
+`no-digit-space`: An optional bool flag to surpress spaces between numbers.
+
 e.g.
 > {  
 "title": "English",  
@@ -80,13 +83,13 @@ e.g.
 The value specifies a boundary. If the digit being formatted is equal or above that boundary, and  
 the digits following it are below that boundary, the seperator is inserted.  
 e.g. If formatting the number '1234', when formatting the 1000 part, no seperator is triggered
-as the following number (200) is also above the boundary.
-When formatting the 200, the seperator is triggered as the following digits, '34' are below the boundary.
+as the following digits (234) is also above the boundary.  
+When formatting the 200, the seperator is triggered as the following digits (34) are below the boundary.
 the `two hundred` will be tagged with the seperator `and`, before the '23' is formatted.
 When formatting the 20 and 3, the seperator is no longer triggered as both are below the boundary.
 
 The reverse flag is used with languages which reverse the order of certain digits when spoken.  
-e.g. 23 in Dutch = drie en twintig  (3 and twenty)
+e.g. 23 in Dutch = drie-en-twintig  (three and twenty)
 > `{"value":10, "name": "en", "reverse":  true}`
 
 When a reverse seperator is triggered, the current digits being formatted are reversed with the
