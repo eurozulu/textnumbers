@@ -43,5 +43,5 @@ func (n Number) DigitCount() int {
 }
 
 func (n Number) Base() Base {
-	return Base(math.Log10(float64(n)))
+	return Base(math.Round(math.Log10(float64(n))))
 }
