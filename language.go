@@ -12,6 +12,8 @@ import (
 )
 
 const languageFolderName = "languages"
+const defaultLanguage = "english"
+const defaultLanguageFileName = ".language"
 
 // Language represents a number formater for single Language
 type Language interface {
@@ -157,6 +159,17 @@ func insertIntoSlice(s, insert []string, index int) []string {
 	return append(s[:index], insert...)
 }
 
+func readFileIfExists(fn string) (string, error) {
+	by, err := os.ReadFile(fn)
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = nil
+		}
+		return "", err
+	}
+	return strings.Trim(string(by), "\n \t;"), nil
+}
+
 func nameToFilePath(name string) string {
 	if filepath.Ext(name) == "" {
 		name = strings.Join([]string{name, "json"}, ".")
@@ -165,6 +178,17 @@ func nameToFilePath(name string) string {
 		name = filepath.Join(languageFolderName, name)
 	}
 	return name
+}
+
+func DefaultLanguage() string {
+	l, err := readFileIfExists(defaultLanguageFileName)
+	if err != nil {
+		panic(err)
+	}
+	if string(l) == "" {
+		return defaultLanguage
+	}
+	return strings.ToLower(l)
 }
 
 func OpenLanguage(name string) (Language, error) {

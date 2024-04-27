@@ -27,6 +27,7 @@ Supports positive and negitive numbers upto 18446744073709551615
 ### Languages
 
 French, Dutch and English are provided with English being the default.  
+To set an alternative default, create a file in the same directory as the executable, named `.language` containing the name of the language you wish to be the default.  
 Some experimental languages (unfinshed) also included: Spanish, Roman  
 Languages are expressed as json files, located in the `languages/` directory, which must reside in the same directory as
 the executable.  

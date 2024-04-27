@@ -8,13 +8,14 @@ import (
 	"textnumbers"
 )
 
-const defaultLanguage = "english"
-
 func main() {
 	args, err := newArgs(os.Args[1:])
 	if err != nil {
 		fmt.Println(err)
 		return
+	}
+	if args.language == "" {
+		args.language = textnumbers.DefaultLanguage()
 	}
 
 	l, err := textnumbers.OpenLanguage(args.language)

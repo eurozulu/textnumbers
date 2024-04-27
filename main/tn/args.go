@@ -40,9 +40,8 @@ func newArgs(args []string) (*myargs, error) {
 		}
 		found.language = args[ix+1]
 		args = args[:ix]
-	} else {
-		found.language = defaultLanguage
 	}
+
 	ix = findIndex("-q", args)
 	found.quiet = ix >= 0
 	if found.quiet {
