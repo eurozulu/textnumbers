@@ -13,18 +13,24 @@ import (
 
 const languageFolderName = "languages"
 
+// Language represents a number formater for single Language
 type Language interface {
+	// Title is the name of the Language
 	Title() string
+
+	// Format formats the given number into the language
 	Format(i uint64) string
+
+	// MinusLabel is the string used to indicate a negative number in the language
 	MinusLabel() string
 }
 
 type language struct {
 	title      string
 	minusLabel string
+	digitSpace string
 	names      []*valueName
 	separators []*valueSeperator
-	digitSpace string
 }
 
 func (l language) Title() string {
@@ -59,10 +65,10 @@ func (l language) Format(i uint64) string {
 		digits = append(digits, ns)
 		nn := i - nf // The next number to format
 
-		// insert seperator if needed
+		// insert separator if needed
 		if nn > 0 {
 			if sp := l.seperatorFor(i); sp != nil && nn < sp.Value {
-				// If seperator reverse, collect next value and insert with seperator, prior to last value (just inserted)
+				// If separator reverse, collect next value and insert with separator, prior to last value (just inserted)
 				if sp.ReverseDigits {
 					digits = insertIntoSlice(digits, []string{l.Format(nn), sp.String()}, len(digits)-1)
 					nn = 0
@@ -81,13 +87,6 @@ func (l language) Format(i uint64) string {
 	return strings.Join(digits, l.digitSpace)
 }
 
-func insertIntoSlice(s, insert []string, index int) []string {
-	if index < len(s) {
-		insert = append(insert, s[index:]...)
-	}
-	return append(s[:index], insert...)
-}
-
 func (l language) valueNameFor(i uint64) *valueName {
 	name := l.names[0]
 	for _, lb := range l.names[1:] {
@@ -99,7 +98,7 @@ func (l language) valueNameFor(i uint64) *valueName {
 	return name
 }
 
-// seperatorFor returns the seperator with the biggest value available which is <= given v
+// seperatorFor returns the separator with the biggest value available which is <= given v
 func (l language) seperatorFor(v uint64) *valueSeperator {
 	var found *valueSeperator
 	for _, sp := range l.separators {
@@ -140,10 +139,8 @@ func (l *language) UnmarshalJSON(bytes []byte) error {
 	l.separators = lp.Separators
 	l.minusLabel = lp.MinusLabel
 	l.digitSpace = ds
-	return l.validate()
-}
 
-func (l *language) validate() error {
+	// validate
 	if len(l.names) == 0 {
 		return fmt.Errorf("no names found")
 	}
@@ -153,7 +150,14 @@ func (l *language) validate() error {
 	return nil
 }
 
-func cleanName(name string) string {
+func insertIntoSlice(s, insert []string, index int) []string {
+	if index < len(s) {
+		insert = append(insert, s[index:]...)
+	}
+	return append(s[:index], insert...)
+}
+
+func nameToFilePath(name string) string {
 	if filepath.Ext(name) == "" {
 		name = strings.Join([]string{name, "json"}, ".")
 	}
@@ -164,7 +168,7 @@ func cleanName(name string) string {
 }
 
 func OpenLanguage(name string) (Language, error) {
-	f, err := os.Open(cleanName(name))
+	f, err := os.Open(nameToFilePath(name))
 	if err != nil {
 		return nil, err
 	}

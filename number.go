@@ -36,7 +36,7 @@ func (n Number) ValueAt(base Base) uint64 {
 	return uint64(n) % p
 }
 
-// DigitCount retruns the number of digits in the Number.
+// DigitCount returns the number of digits in the Number.
 // All Numbers have one or more digits.
 func (n Number) DigitCount() int {
 	return int(n.Base()) + 1

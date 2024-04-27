@@ -20,7 +20,8 @@ Outputs: `un mille deux cent et trente quatre`
 `tn 1234 as dutch`  
 Outputs: `eenduizend tweehonderdvierendertig`
 
-Supports positive and negitive numbers upto 18446744073709551615 (Unsigned 64 bit)  
+Supports positive and negitive numbers upto 18446744073709551615  
+(eighteen quintillion four hundred and fourty six quadrillion seven hundred and fourty four trillion seventy three billion seven hundred and nine million five hundred and fifty one thousand six hundred and fifteen)
 `as` and `in` can either be used to specify the language.
 
 ### Languages
@@ -86,8 +87,9 @@ e.g. If formatting the number '1234', when formatting the 1000 part, no seperato
 as the following digits (234) is also above the boundary.  
 When formatting the 200, the seperator is triggered as the following digits (34) are below the boundary.
 the `two hundred` will be tagged with the seperator `and`, before the '23' is formatted.
-When formatting the 20 and 3, the seperator is no longer triggered as both are below the boundary.
-
+When formatting the 20 and 3, the seperator is no longer triggered as both are below the boundary.  
+The result is `One thousand two hundred and twenty three`  
+  
 The reverse flag is used with languages which reverse the order of certain digits when spoken.  
 e.g. 23 in Dutch = drie-en-twintig  (three and twenty)
 > `{"value":10, "name": "en", "reverse":  true}`
