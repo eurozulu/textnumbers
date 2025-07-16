@@ -207,3 +207,16 @@ func OpenLanguage(name string) (Language, error) {
 	}
 	return l, nil
 }
+
+// Helper to use as a library
+func FormatNumber(n uint64, lang ...string) (string, error) {
+	if len(lang) == 0 {
+		lang = append(lang, defaultLanguage)
+	}
+	l, err := OpenLanguage(lang[0])
+	if err != nil {
+		return "", err
+	}
+	v := l.Format(n)
+	return v, nil
+}
