@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/eurozulu/textnumbers"
 	"log"
 	"os"
 	"strings"
-	"textnumbers"
 )
 
 func main() {
